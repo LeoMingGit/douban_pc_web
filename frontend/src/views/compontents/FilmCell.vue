@@ -1,59 +1,44 @@
 <template>
-	<div class="FilmCell" style="margin-left:3rem;margin-right:4rem">
-		<p class="ul"></p>
-		<table width="100%">
-			<tbody>
-				<tr class="item">
-					<td width="100" valign="center">
-
-
-						<a title="" class="nbg" href="javascript:void(0)" @click="Describe">
-							<img width="85" alt="" :src="film.poster" :onerror="logo">
-						</a>
-					</td>
-
-					<td valign="center">
-
-						<div class="pl2">
-							<a title="" class="nbg" href="javascript:void(0)" @click="Describe">
-								<p style="font-size:16px;">{{film.title}}</p>
-							</a>
-							<!--上映时间-->
-							<div style="margin-bottom: 1em;float: left;text-align:justify">
-
-								<p>
-									<span class="pl" style="color:#909399"><strong>导演：</strong></span>{{directors}}<br>
-									<span class="pl" style="color:#909399"><strong>类型：</strong></span>{{genres}}<br>
-									<span class="pl" style="color:#909399" ><strong>简介：</strong></span>
-									<span class="pl">
-										{{film.summary.substr(0,100)+'....'}}
-									</span>
-								</p>
-							</div>
-
-							<!--评分-->
-							<div class="star clearfix" style="margin-bottom: 1rem;">
-								<!-- <span class="allstar20"></span> -->
-								<el-col :span="5" :offset="6">
-									<el-rate style="float: right;" v-model="film.rating.average/2" disabled text-color="#ff9900"></el-rate>
-
-								</el-col>
-								<el-col :span="1" >
-									<span  class="pl" style="float: left;color:#E09015">{{film.rating.average? film.rating.average:0}}分</span>
-								</el-col>
-
-								<el-col :span="6"> <span class="pl" style="float: left;margin-left:1rem;">({{film.rating.rating_people==''? 0:film.rating.rating_people}}人评价)</span></el-col>
-								<!-- <span class="rating_nums">{{film.rating.average}}分</span> -->
-
-							</div>
-
-						</div>
-					</td>
-
-				</tr>
-			</tbody>
-		</table>
-	</div>
+  <div class="FilmCell" style="margin-left:3rem;margin-right:4rem">
+    <p class="ul"></p>
+      <el-row>
+        <!--左侧-->
+        <el-col :span="4">
+          <a title="" class="nbg" href="javascript:void(0)" @click="Describe">
+            <img width="85" alt="" :src="film.poster" :onerror="logo">
+          </a>
+        </el-col>
+        <!--右侧-->
+        <el-col :span="12" class="el-col-right">
+          <!--电影名称-->
+          <el-row>
+               <a title="" class="nbg" href="javascript:void(0)" @click="Describe"><p style="font-size:16px;">{{ film.title }}</p></a>
+          </el-row>
+          <!--评分-->
+          <el-row>
+            <el-col :span="10" >
+                <el-rate  v-model="film.rating.average / 2" disabled
+                    text-color="#ff9900"></el-rate>
+              </el-col>
+              <el-col :span="2">
+                <span class="pl" style="float: left;color:#E09015">{{ film.rating.average ?
+                  film.rating.average : 0 }}分</span>
+              </el-col>
+              <el-col :span="6"> <span class="pl" style="float: left;margin-left:1rem;">({{ film.rating.rating_people
+                == '' ?
+                0 : film.rating.rating_people }}人评价)</span></el-col>
+          </el-row>
+          <!--类型-->
+          <el-row>
+             <div class="pl" style="color:#909399">{{ genres }}</div>
+          </el-row>
+         <!--演员导演-->
+          <el-row>
+              <div class="pl" style="color:#909399">{{ directors }}</div>
+          </el-row>
+        </el-col>
+      </el-row>
+  </div>
 </template>
 
 <script>
@@ -172,4 +157,7 @@
 		line-height: 150%;
 		color: #666666;
 	}
+.el-col-right {
+  text-align: left;
+}
 </style>
