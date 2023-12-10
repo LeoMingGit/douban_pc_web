@@ -103,7 +103,7 @@ export default {
       film: "",
       id: "",
       imdbLink: "",
-      logo: 'this.src="' + require("../assets/timg.jpg") + '"',
+      logo: 'this.src="' + require("../../assets/timg.jpg") + '"',
       directors: "",
       writers: "",
       casts: "",

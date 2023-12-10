@@ -26,17 +26,6 @@
         </el-col>
       </el-row>
     </nav>
-    <!--电影类别-->
-
-    <el-tabs v-model="activeName" type="card" @tab-click="changeGenre" style="margin-top:25px;">
-      <el-tab-pane
-        v-for="item in genres"
-        :key="item"
-        :label="item"
-        :name="index"
-        style="font-size: 20px;"
-      ></el-tab-pane>
-    </el-tabs>
 
     <!-- 电影列表 -->
     <FilmCell v-for="item in currentFilms" :key="item" :films="item" @click="getDescribe()"></FilmCell>
@@ -57,8 +46,8 @@
 <script>
 import axios from "axios";
 
-import FilmCell from "./FilmCell";
-import Describe from "./FilmCellDetail";
+import FilmCell from "../../compontents/FilmCell.vue";
+import Describe from "../../compontents/FilmCellDetail.vue";
 
 export default {
   name: "App",
@@ -71,10 +60,10 @@ export default {
       currentPage: 1,
       filmTitle: "",
       currentFilms: [],
-      activeName: "0",
       genres: [],
       films_genre: "",
-      total: 200
+      total: 200,
+      index:0,
     };
   },
   created: function() {
@@ -198,46 +187,6 @@ export default {
         10 * this.currentPage
       );
     },
-    changeGenre(tab, event) {
-      this.activeName = tab.index;
-      //如果点到了所有
-      if (tab.index == "0") {
-        //重新设置页面参数和电影参数为全体films
-        this.films_genre = this.films;
-        this.currentPage = 1;
-        this.currentFilms = this.films_genre.slice(
-          10 * (this.currentPage - 1),
-          10 * this.currentPage
-        );
-        this.total = this.films.length;
-      } else {
-        //搜索设置电影参数和页面参数
-        var searchResult = [];
-        var input = this.genres[tab.index];
-        //console.log(tab);
-
-        for (var i = 0, len = this.films.length; i < len; i++) {
-          var film = JSON.parse(this.films[i]);
-          var genres = film.genres;
-          //console.log(genres);
-          //console.log(input);
-
-          //console.log(genres.indexOf(input));
-          if (genres.indexOf(input) != -1) {
-            searchResult.push(this.films[i]);
-          }
-        }
-
-        this.total = searchResult.length;
-        this.films_genre = searchResult;
-        //console.log(searchResult.length);
-        this.currentPage = 1;
-        this.currentFilms = this.films_genre.slice(
-          10 * (this.currentPage - 1),
-          10 * this.currentPage
-        );
-      }
-    }
   }
 };
 </script>

@@ -13,8 +13,9 @@ export default {
     return {};
   },
   mounted() {
+    //挂载首页
     this.$router.push({
-      path: "film"
+      path: "film/home"
     });
   }
 };

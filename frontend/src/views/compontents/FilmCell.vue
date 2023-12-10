@@ -36,12 +36,12 @@
 								<!-- <span class="allstar20"></span> -->
 								<el-col :span="5" :offset="6">
 									<el-rate style="float: right;" v-model="film.rating.average/2" disabled text-color="#ff9900"></el-rate>
-									
+
 								</el-col>
 								<el-col :span="1" >
 									<span  class="pl" style="float: left;color:#E09015">{{film.rating.average? film.rating.average:0}}分</span>
 								</el-col>
-								
+
 								<el-col :span="6"> <span class="pl" style="float: left;margin-left:1rem;">({{film.rating.rating_people==''? 0:film.rating.rating_people}}人评价)</span></el-col>
 								<!-- <span class="rating_nums">{{film.rating.average}}分</span> -->
 
@@ -63,7 +63,7 @@
 		data() {
 			return {
 				film: JSON.parse(this.films),
-				logo: 'this.src="' + require('../assets/timg.jpg') + '"',
+				logo: 'this.src="' + require('../../assets/timg.jpg') + '"',
 				directors: '',
 				genres:''
 			}; //重新赋值？
