@@ -1,5 +1,7 @@
 package com.douban.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.douban.mapper.MoviesMapper;
 import com.douban.model.Movies;
 import com.douban.service.MoviesService;
@@ -21,8 +23,6 @@ public class MoviesController {
     @ResponseBody
     public String GetAllMovies() {
         System.out.println("----- getAllMovies method test ------");
-
-        // Assuming selectAll method in MovieMapper retrieves all movies from the database
         List<Movies> movieList = moviesService.getAllMovies();
         movieList.forEach(System.out::println);
 
@@ -31,5 +31,18 @@ public class MoviesController {
         return jsonString;
     }
 
-    // You can add more methods to handle different movie-related operations (e.g., add, update, delete).
-}
+
+    @ApiOperation("根据关键字获取电影信息（分页）")
+    @GetMapping("/getMoviesByKeyword")
+    public IPage<Movies> getMoviesByKeyword(
+            @RequestParam(defaultValue = "1") long pageIndex,
+            @RequestParam(defaultValue = "10") long pageSize,
+            @RequestParam(required = false) String keyword
+    ) {
+        System.out.println("----- getMoviesByKeyword method test ------");
+        Page<Movies> page = new Page<>(pageIndex, pageSize);
+
+        return moviesService.getMoviesByKeywordPaginated(page, keyword);
+    }
+
+ }

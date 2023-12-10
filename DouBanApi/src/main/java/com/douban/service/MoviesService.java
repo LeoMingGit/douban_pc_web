@@ -1,5 +1,7 @@
 package com.douban.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.douban.model.Movies;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -12,4 +14,5 @@ import java.util.List;
 */
 public interface MoviesService extends IService<Movies> {
     List<Movies> getAllMovies();
+    IPage<Movies> getMoviesByKeywordPaginated(Page<Movies> page, String keyword);
 }
