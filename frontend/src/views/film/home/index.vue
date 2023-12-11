@@ -1,17 +1,12 @@
 <template>
   <div class="films">
-    <!-- 标语 -->
-    <header style="margin-bottom=1rem">
-      <!-- <h1>CHECK YOUR FAVORITE FILM AT SIMPLE FILM</h1> -->
-    </header>
-
     <!-- 搜索栏 -->
     <nav>
       <el-row>
         <el-col :span="5" :offset="10">
           <el-input
             style="float:right"
-            v-model="filmTitle"
+            v-model="keyword"
             placeholder="请输入电影名"
             @keyup.enter.native="searchBytitle"
           ></el-input>
@@ -26,10 +21,8 @@
         </el-col>
       </el-row>
     </nav>
-
     <!-- 电影列表 -->
-    <FilmCell v-for="item in currentFilms" :key="item" :films="item" @click="getDescribe()"></FilmCell>
-
+    <FilmCell v-for="item in currentFilms" :key="item.movieId" :film="item" @click="getDescribe()"></FilmCell>
     <!-- 分页器 -->
     <el-pagination
       style="margin-top: 1rem;"
@@ -42,13 +35,10 @@
     ></el-pagination>
   </div>
 </template>
-
 <script>
 import axios from "axios";
-
 import FilmCell from "../../compontents/FilmCell.vue";
-import Describe from "../../compontents/FilmCellDetail.vue";
-
+import { getMoviesByKeyword } from '../../../api/film';
 export default {
   name: "App",
   components: {
@@ -56,81 +46,22 @@ export default {
   },
   data() {
     return {
-      films: "",
+      keyword: "",
       currentPage: 1,
-      filmTitle: "",
+      pageSize:20,
+      total: 0,
       currentFilms: [],
-      genres: [],
-      films_genre: "",
-      total: 200,
-      index:0,
     };
   },
-  created: function() {
+  created: function() {},
+  mounted: function() {
     //初始化电影列表数据
-    axios.get("../../static/resources/films2.json").then(response => {
-      //读取电影列表
-      this.films = response.data;
-      this.films_genre = this.films;
-
-      //初始化分页显示数据
-      this.currentFilms = this.films_genre.slice(
-        10 * (this.currentPage - 1),
-        10 * this.currentPage
-      );
-
-      //遍历所有电影的类别genres数组，并去重来初始化类别标签数据
-      //var len= this.films.length ，循环中不能用？
-      var genre_tmp = [];
-      for (var i = 0, len = this.films.length; i < len; i++) {
-        var film = JSON.parse(this.films[i]);
-        var genres = film.genres;
-        //console.log("genres", genres);
-        var genres_len = genres.length;
-        for (var j = 0; j < genres_len; j++) {
-          genre_tmp.push(genres[j]);
-        }
-      }
-      //使用字典键去重，字典值记录键的数据类型，防止indexOf认为 1，"1"是相同的
-      var temp = {};
-      var count = {};
-      this.genres.push("所有");
-      //var r = [];
-      for (var i = 0, len = genre_tmp.length; i < len; i++) {
-        var val = genre_tmp[i];
-        var type = typeof val;
-        if (!temp[val]) {
-          temp[val] = [type];
-          //this.genres.push(val);
-          //计数
-          count[val] = 1;
-        } else if (temp[val].indexOf(type) < 0) {
-          temp[val].push(type);
-          //this.genres.push(val);
-          //计数
-          count[val] = 1;
-        } else {
-          count[val]++;
-        }
-      }
-
-      var sdic = Object.keys(count).sort(function(a, b) {
-        return count[b] - count[a];
-      });
-      //console.log(sdic);
-      for (var i in sdic) {
-        this.genres.push(sdic[i]);
-      }
-    });
+    this.initData();
   },
-  mounted: function() {},
   methods: {
     handleCurrentChange(val) {
       this.currentPage = val;
-      this.currentFilms = this.films_genre.slice(
-        10 * (this.currentPage - 1),
-        10 * this.currentPage
-      );
+
     },
     getDescribe(film, id) {
       this.$router.push({
@@ -142,51 +73,26 @@ export default {
       });
     },
     searchBytitle() {
-      //this.filmTitle;
-      //console.log(JSON.parse(this.films[1]).aka[0].indexOf('要命的决定'))
-      //console.log(JSON.parse(this.films[1]).aka[0])
-      if (!this.filmTitle) {
-        this.activeName = "0";
-        this.total = this.films.length;
-        this.currentPage = 1;
-        this.films_genre = this.films;
-        this.currentFilms = this.films_genre.slice(
-          10 * (this.currentPage - 1),
-          10 * this.currentPage
-        );
-      }
-      var searchResult = [];
-      var input = this.filmTitle.trim().toUpperCase();
-      for (var i = 0, len = this.films.length; i < len; i++) {
-        var film = JSON.parse(this.films[i]);
-        if (film.title != null) {
-          var s = film.title.trim().toUpperCase();
 
-          if (s.indexOf(input) != -1) {
-            searchResult.push(this.films[i]);
-            continue;
-          }
-        }
-        for (var j = 0, len2 = film.aka.length; j < len2; j++) {
-          if (film.aka[j]) {
-            var s = film.aka[j].trim().toUpperCase();
-            if (s.indexOf(input) != -1) {
-              searchResult.push(this.films[i]);
-              break;
-            }
-          }
-        }
-      }
-      //console.log(searchResult);
-      this.activeName = "0";
-      this.total = searchResult.length;
-      this.currentPage = 1;
-      this.films_genre = searchResult;
-      this.currentFilms = searchResult.slice(
-        10 * (this.currentPage - 1),
-        10 * this.currentPage
-      );
     },
+    initData() {
+       const data = {
+        pageIndex:this.currentPage,
+        pageSize:this.pageSize,
+        keyword :this.keyword
+      };
+      var me=this;
+      getMoviesByKeyword(data).then(res => {
+         if(res.status===200){
+          // debugger
+          me.currentFilms =res.data.rows;
+          me.total =res.data.total;
+        }
+      }).catch(err => {
+        console.log(err);
+      })
+    }
+
   }
 };
 </script>
