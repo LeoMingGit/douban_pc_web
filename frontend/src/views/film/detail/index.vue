@@ -77,9 +77,9 @@ export default {
 <style>
 .movie-container {
   text-align: center;
-  float: left;
+  /* float: left; */
   margin: 3px 12px 0 32px;
-  max-width: 155px;
+  /* max-width: 155px; */
   overflow: hidden;
 }
 
@@ -93,8 +93,8 @@ export default {
   height: 191px;
 }
 .info {
-  /* float: left; */
-  max-width: 333px;
+  float: left;
+  /* max-width: 333px; */
   margin-left: 16px;
   margin-top: 46px;
  }
@@ -106,9 +106,9 @@ export default {
     float: none;
     width: auto;
 }
-.subject {
+/* .subject {
     width: 500px;
-}
+} */
 .pl {
     font: 12px Arial, Helvetica, sans-serif;
     line-height: 150%;
@@ -122,5 +122,6 @@ export default {
 
 .summary{
   padding: 11px 18px;
+  text-align: left;
 }
 </style>
