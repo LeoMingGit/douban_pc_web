@@ -30,7 +30,7 @@
       :page-size="10"
       :current-page="currentPage"
       background
-      layout="prev, pager, next"
+      layout="total, sizes, prev, pager, next, jumper""
       :total="total"
     ></el-pagination>
   </div>
@@ -48,20 +48,19 @@ export default {
     return {
       keyword: "",
       currentPage: 1,
-      pageSize:20,
-      total: 0,
+      pageSize:10,
+      total: 1,
       currentFilms: [],
     };
   },
   created: function() {},
   mounted: function() {
-    //初始化电影列表数据
-    this.initData();
+    this.dotGetMoviesByKeyword();
   },
   methods: {
     handleCurrentChange(val) {
       this.currentPage = val;
-
+      this.dotGetMoviesByKeyword();
     },
     getDescribe(film, id) {
       this.$router.push({
@@ -73,10 +72,10 @@ export default {
       });
     },
     searchBytitle() {
-
+       this.dotGetMoviesByKeyword();
     },
-    initData() {
-       const data = {
+    dotGetMoviesByKeyword() {
+      const data = {
         pageIndex:this.currentPage,
         pageSize:this.pageSize,
         keyword :this.keyword
@@ -84,9 +83,8 @@ export default {
       var me=this;
       getMoviesByKeyword(data).then(res => {
          if(res.status===200){
-          // debugger
-          me.currentFilms =res.data.rows;
-          me.total =res.data.total;
+           me.currentFilms =res.data.rows;
+           me.total =res.data.total;
         }
       }).catch(err => {
         console.log(err);
