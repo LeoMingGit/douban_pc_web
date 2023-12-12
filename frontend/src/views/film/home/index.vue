@@ -30,13 +30,12 @@
       :page-size="10"
       :current-page="currentPage"
       background
-      layout="total, sizes, prev, pager, next, jumper""
+      layout="total, sizes, prev, pager, next, jumper"
       :total="total"
     ></el-pagination>
   </div>
 </template>
 <script>
-import axios from "axios";
 import FilmCell from "../../compontents/FilmCell.vue";
 import { getMoviesByKeyword } from '../../../api/film';
 export default {
@@ -62,11 +61,11 @@ export default {
       this.currentPage = val;
       this.dotGetMoviesByKeyword();
     },
-    getDescribe(film, id) {
+    getDescribe(film) {
+      debugger
       this.$router.push({
-        name: "Describe",
+        name: "filmDetail",
         params: {
-          id: id,
           film: film
         }
       });

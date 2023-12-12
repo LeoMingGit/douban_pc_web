@@ -13,4 +13,6 @@ public class MovieVO {
     private String picUrl;
     private int movieId;
     private String movieName;
+    private  String summary;
+
 }

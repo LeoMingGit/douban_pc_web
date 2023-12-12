@@ -61,31 +61,18 @@
   },
 		data() {
 			return {
-				// film: JSON.parse(this.films),
-				// logo: 'this.src="' + require('../../assets/timg.jpg') + '"',
-				// directors: '',
-				// genres:''
-			}; //重新赋值？
-		},
-		watch: {
-			// films(newValue, oldValue) {
-			// 	this.film = JSON.parse(newValue) //监听
-			// }
+			};
 		},
 		created(){
-
 		},
 		methods: {
 			Describe() {
-				this.$parent.getDescribe(this.film, this.film._id)
+				this.$parent.getDescribe(this.film)
 			},
 		}
 	}
 </script>
-
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-	/* @import '../static/css/cell_template.css' */
 	.ul {
 		border-bottom: 1px dashed #DDDDDD;
 		line-height: 100%;

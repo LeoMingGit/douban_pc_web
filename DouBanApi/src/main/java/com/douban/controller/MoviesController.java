@@ -58,6 +58,7 @@ public class MoviesController {
             movieVO.setMovieId(movie.getId());
             movieVO.setMovieName(movie.getName() + " (" + movie.getYear() + ")");
             movieVO.setTags(formatTags(movie.getTags()));
+            movieVO.setSummary(movie.getSummary());
             list.add(movieVO);
         }
         long totalSize = calculateTotalSize(moviesPage.getTotal(), pageSize);
