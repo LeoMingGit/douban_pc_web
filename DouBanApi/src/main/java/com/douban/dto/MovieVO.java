@@ -8,11 +8,13 @@ import java.util.List;
 public class MovieVO {
     private double average;
     private int ratingPeople;
-    private String genres;
+    private String genre;
     private String tags;
     private String picUrl;
     private int movieId;
     private String movieName;
     private  String summary;
+    private  String country;
+
 
 }

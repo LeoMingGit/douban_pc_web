@@ -53,12 +53,13 @@ public class MoviesController {
             MovieVO movieVO = new MovieVO();
             movieVO.setAverage(movie.getRating());
             movieVO.setRatingPeople(movie.getRatingsum());
-            movieVO.setGenres(movie.getGenre());
+            movieVO.setGenre(movie.getGenre());
             movieVO.setPicUrl(movie.getImg());
             movieVO.setMovieId(movie.getId());
             movieVO.setMovieName(movie.getName() + " (" + movie.getYear() + ")");
             movieVO.setTags(formatTags(movie.getTags()));
             movieVO.setSummary(movie.getSummary());
+            movieVO.setCountry(movie.getCountry());
             list.add(movieVO);
         }
         long totalSize = calculateTotalSize(moviesPage.getTotal(), pageSize);

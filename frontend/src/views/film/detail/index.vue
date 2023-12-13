@@ -1,42 +1,28 @@
 <template>
-  <div>
-    <div class="subject clearfix subjectwrap">
-      <h1>
-         <span>{{ film.movieName }}</span>
-      </h1>
+  <div class="subject clearfix subjectwrap">
+    <h1>
+      <span>{{ film.movieName }}</span>
+    </h1>
     <div class="movie-container">
-      <img
-        :src="film.picUrl"
-        alt="瞒天过海"
-        title="点击看更多海报"
-        class="movie-poster"
-      />
+      <img :src="film.picUrl" alt="瞒天过海" title="点击看更多海报" class="movie-poster" />
     </div>
-     <div class="info">
+    <div class="info">
       <div class="flex-item">
-        <span class="pl">类型:</span> <span>剧情/悬疑/悬疑</span>
+        <span class="pl">类型:</span> <span>{{ film.genre }}</span>
       </div>
       <div class="flex-item">
-        <span class="pl">标签:</span> <span>剧情/悬疑/悬疑</span>
+        <span class="pl">标签:</span> <span>{{ film.tags }}</span>
       </div>
       <div class="flex-item">
-        <span class="pl">制片国家/地区:</span> 中国大陆
-      </div>
-      <div class="flex-item">
-        <span class="pl">上映日期:</span> <span>2023-12-08(中国大陆)</span>
+        <span class="pl">制片国家/地区:</span>{{ film.country }}
       </div>
       <div class="summary">
-         {{ film.summary }}
+        {{ film.summary }}
       </div>
     </div>
-
-   </div>
-
-
   </div>
 
   <!--电影总结-->
-
 </template>
 
 
@@ -46,16 +32,6 @@ export default {
   data() {
     return {
       film: "",
-      id: "",
-      imdbLink: "",
-      logo: '',
-      directors: "",
-      writers: "",
-      casts: "",
-      genres: "",
-      languages: "",
-      pubCountries: "",
-      aka: ""
     };
   },
   computed: {
