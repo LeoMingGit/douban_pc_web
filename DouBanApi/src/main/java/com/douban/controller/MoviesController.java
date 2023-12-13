@@ -7,7 +7,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.douban.dto.MovieVO;
 import com.douban.dto.PagingDto;
 import com.douban.mapper.MoviesMapper;
+import com.douban.model.Comments;
 import com.douban.model.Movies;
+import com.douban.service.CommentsService;
 import com.douban.service.MoviesService;
 import io.swagger.annotations.ApiOperation;
 import org.apache.ibatis.annotations.DeleteProvider;
@@ -23,6 +25,9 @@ import java.util.List;
 public class MoviesController {
     @Autowired
     private MoviesService moviesService;
+
+    @Autowired
+    private CommentsService commentsService;
 
     @ApiOperation("获取所有电影信息")
     @RequestMapping(value = "/GetAllMovies", method = RequestMethod.GET)
@@ -64,7 +69,7 @@ public class MoviesController {
         }
         long totalSize = calculateTotalSize(moviesPage.getTotal(), pageSize);
 
-        PagingDto<MovieVO> pagingDto = new PagingDto<MovieVO>(moviesPage.getTotal(),list,totalSize,pageIndex,pageSize);
+        PagingDto<MovieVO> pagingDto = new PagingDto<MovieVO>(moviesPage.getTotal(), list, totalSize, pageIndex, pageSize);
 
         return pagingDto;
     }
@@ -91,4 +96,13 @@ public class MoviesController {
         return (long) Math.ceil((double) total / pageSize);
     }
 
+    @GetMapping("/findByMovieId")
+    public IPage<Comments> findByMovieId(
+            @RequestParam Integer movieId,
+            @RequestParam(defaultValue = "1") long pageIndex,
+            @RequestParam(defaultValue = "10") long pageSize) {
+        Page<Comments> page = new Page<>(pageIndex, pageSize);
+
+        return commentsService.findByMovieId(movieId,page);
+    }
 }
