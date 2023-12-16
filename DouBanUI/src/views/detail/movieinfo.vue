@@ -22,7 +22,7 @@
             <div class="score-comment"><a href="#">{{detailData.rating.count}}</a>人评价</div>
           </div>
         </div>
-        <div class="score-rate">
+        <!-- <div class="score-rate">
           <div v-for="(item) in rate.list" class="rate-item" :key="item.index">
             <span>{{item.index}} 星</span>
             <span class="wline" :style="{width:item.width+'px'}"></span>
@@ -31,16 +31,16 @@
         </div>
         <div class="better-content">
           <div v-for="(item,index) in rate.betterList" class="better-item">好于 <a href="#">{{(item.rank*100).toFixed(1)+'%'}} {{item.type}}</a></div>
-        </div>
+        </div> -->
       </div>
     </div>
-    <div class="opera-box">
+    <!-- <div class="opera-box">
       <div>请评分：</div>
       <div>
         <img src="https://img3.doubanio.com/f/shire/5bbf02b7b5ec12b23e214a580b6f9e481108488c/pics/add-review.gif">&nbsp;
         <a href="javascript:void(0)" class="comment-link" @click="goPublish">写影评</a>
       </div>
-    </div>
+    </div> -->
     <div class="intro">
       <h2 class="intro-title">
         {{detailData.title}}的剧情简介· · · · · ·
@@ -66,6 +66,15 @@
     name: 'movieinfo',// 组件的名称，尽量和文件名一致
     components: {
       rankstar 
+    },
+    props: {
+      movieId: {
+        type: [Number, String],
+        required: true
+      }
+    },
+    mounted() {
+       alert(this.movieId)
     },
     setup(){
       const store = Vuex.useStore()

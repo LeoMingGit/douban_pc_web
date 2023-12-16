@@ -11,7 +11,7 @@
             <rankstar :score="item.average" class="rank-star"></rankstar>
             <div class="score-text">{{item.average}}</div>
           </div>
-          <div class="place">{{item.genre}}</div>
+          <div class="place">{{item.describe}}</div>
         </div>
       </div>
     </div>
@@ -43,7 +43,7 @@
       const pageSize = ref(99999);
       const total = ref(1);
       const currentFilms = ref([]);
-
+      const keyword = ref("");
       let movieData = ref({})
       let content = ref('')
       let searchList = reactive({
@@ -62,13 +62,15 @@
         total,
         currentFilms,
         searchText,
+        keyword
       }
     },
     computed: {
 
     },
     mounted: function() {
-
+      debugger
+       this.keyword= this.$route.query.searchText;
        this.dotGetMoviesByKeyword();
     },
     methods: {
@@ -76,7 +78,7 @@
         const data = {
           pageIndex: this.currentPage,
           pageSize: this.pageSize,
-          keyword: this.searchText
+          keyword: this.keyword,
         };
         var me = this;
         getMoviesByKeyword(data).then(res => {

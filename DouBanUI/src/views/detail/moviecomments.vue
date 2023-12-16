@@ -8,8 +8,8 @@
         <div class="top-content">
           <img class="avatar" :src="item.user.avatar"/>
           <span class="nickname">{{item.user.name}}</span>
-          <div v-if="item.rating && item.rating.value" class="rankstar"><span class="rank-text">看过</span><rankstar :score="item.rating.value" /></div>
-          <div class="time">{{item.create_time}}</div>
+          <!-- <div v-if="item.rating && item.rating.value" class="rankstar"><span class="rank-text">看过</span><rankstar :score="item.rating.value" /></div>
+          <div class="time">{{item.create_time}}</div> -->
         </div>
         <div class="content three-line">{{item.abstract}}</div>
       </div>
@@ -31,6 +31,12 @@
     name: 'moviecomments',// 组件的名称，尽量和文件名一致
     components: {
       rankstar
+    },
+    props: {
+      movieId: {
+        type: [Number, String],
+        required: true
+      }
     },
     setup(){
       const store = Vuex.useStore()
@@ -56,7 +62,11 @@
         detailData,
         title
       }
-    }
+    },
+    mounted() {
+      alert(this.movieId)
+    },
+
   }
 </script>
 <style scoped lang="less">

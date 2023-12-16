@@ -1,8 +1,8 @@
 <template>
   <div id="footer">
-    <span id="icp" class="fleft gray-link">
+    <!-- <span id="icp" class="fleft gray-link">
       © 2021－2022 movie.com, all rights reserved 《Vue3.0》
-    </span>
+    </span> -->
   </div>
 </template>
 

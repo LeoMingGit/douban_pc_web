@@ -1,9 +1,9 @@
 <template>
   <div class="detail-container">
     <div class="left-content">
-      <movieinfo />
-      <movieactors />
-      <moviecomments />
+      <movieinfo :movieId="id"/>
+      <!-- <movieactors /> -->
+      <moviecomments :movieId="id"/>
     </div>
     
   </div>
@@ -15,7 +15,6 @@
   import movieinfo from './movieinfo.vue'
   import movieactors from './movieactors.vue'
   import moviecomments from './moviecomments.vue'
-  
   import Vuex from 'vuex'
   /**
    * 待办事项页面组件
@@ -26,6 +25,11 @@
       movieinfo,
       movieactors,
       moviecomments
+    },
+    data() {
+    return {
+      id: this.$route.query.id
+    };
     },
   }
 </script>
