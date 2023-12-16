@@ -3,21 +3,34 @@
 
 
 
-#### 前端node 版本
+### 开发模式启动（客户端渲染）
+```
+npm run dev:client
+```
 
-node 版本 16.0.0
+### 开发模式启动（服务端渲染）
+```
+npm run dev:ssr
+```
+
+### 生产模式打包
+```
+npm run build
+```
+
+### 生产模式预览
 
 
-
-#### 前端运行命令
 
 ```
-npm i
+npm run serve
+```
 
-npm run dev
+
 
 ```
 
 #### 后台接口文档地址
 
 http://localhost:8099/swagger-ui.html#
+```

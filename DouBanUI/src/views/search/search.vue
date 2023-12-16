@@ -40,7 +40,7 @@
     },
     setup(){
       const currentPage = ref(1);
-      const pageSize = ref(10);
+      const pageSize = ref(99999);
       const total = ref(1);
       const currentFilms = ref([]);
 
