@@ -57,16 +57,18 @@ public class MoviesController {
     /**
      *
      * @param movieId
+     *  @param type 0 1 2
      * @param current
      * @param size
      * @return
      */
     @GetMapping("/getCommentsByMovieId")
     public PagingDto<Comments> getCommentsByMovieId(@RequestParam Integer movieId,
+                                                    @RequestParam Integer type,
                                                     @RequestParam(defaultValue = "1") Integer current,
                                                     @RequestParam(defaultValue = "10") Integer size) {
         Page<Comments> page = new Page<>(current, size);
-        return commentsService.findByMovieId(movieId, page);
+        return commentsService.findByMovieId(movieId,type, page);
     }
 
 

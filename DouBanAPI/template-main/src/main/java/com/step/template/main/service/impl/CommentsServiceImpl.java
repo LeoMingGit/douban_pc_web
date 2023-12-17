@@ -26,10 +26,12 @@ public class CommentsServiceImpl extends ServiceImpl<CommentsMapper, Comments>
 
 
     @Override
-    public PagingDto<Comments> findByMovieId(Integer movieId, Page<Comments> page) {
+    public PagingDto<Comments> findByMovieId(Integer movieId,Integer type, Page<Comments> page) {
         QueryWrapper<Comments> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("movieId", movieId);
-
+        if(!type.equals(2)){
+            queryWrapper.eq("islike", type);
+        }
         IPage<Comments> commentsPage = commentsMapper.selectPage(page, queryWrapper);
         return convertToPagingDto(commentsPage);
     }

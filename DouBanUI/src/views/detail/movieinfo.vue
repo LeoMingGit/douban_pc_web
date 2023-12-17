@@ -32,12 +32,10 @@
 
 <script>
   import {ref,onMounted, reactive,computed} from 'vue'
-  import service from '@/utils/service'
   import rankstar from '@/components/rankstar/rankstar.vue'
-  import configapi from '@/utils/configapi'
   import Vuex from 'vuex'
   import {useRoute} from 'vue-router'
-import { getMovieDetailById } from '../../api/film'
+  import { getMovieDetailById } from '../../api/film'
   /**
    * 待办事项页面组件
    */
@@ -68,7 +66,6 @@ import { getMovieDetailById } from '../../api/film'
         betterList:[]
       })
       const route = useRoute()
-
       const expand = ()=>{
         actors.short = actors.orgin
         actors.isShowMore = false
@@ -82,23 +79,15 @@ import { getMovieDetailById } from '../../api/film'
       }
     },
     methods:{
-      goPublish(){
-        if (this.$store.state.userInfo.nickname) {
-          this.$router.push('/publish?id='+this.detailData.id)
-        } else {
-          this.$router.push('/login')
-        }
-      },
       dotgetMovieDetailById() {
         var me = this;
         getMovieDetailById(this.movieId).then(res => {
           if (res.status === 200) {
-             debugger
              me.detailData=res.data;
-          }
-        }).catch(err => {
-          console.log(err);
-        })
+            }
+         }).catch(err => {
+            console.log(err);
+         })
       }
     }
   }

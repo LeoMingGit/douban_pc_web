@@ -13,6 +13,6 @@ import com.step.template.main.page.PagingDto;
 */
 public interface CommentsService extends IService<Comments> {
 
-      PagingDto<Comments> findByMovieId(Integer movieId, Page<Comments> page);
+      PagingDto<Comments> findByMovieId(Integer movieId, Integer type,Page<Comments> page);
 
 }
