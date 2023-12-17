@@ -1,7 +1,7 @@
 <template>
   <div class="nav-wapper">
     <div class="nav-header">
-        <div class="nav-logo" @click="$router.push('/')"></div>
+        <div class="nav-logo" @click="$router.push('/')">好评电影网</div>
         <div class="nav-search">
             <input id="inp" placeholder="搜索电影、电视剧、综艺、影人" v-model.trim="searchText"/>
             <div class="search-btn" @click="goSearch"></div>
@@ -72,13 +72,14 @@
   .nav-logo {
       width: 230px;
       height: 54px;
-      background-image: url('./imgs/lg_movie@2x.png');
+      //background-image: url('./imgs/lg_movie@2x.png');
       background-repeat: no-repeat;
       background-position: 0 center;
       background-size: 54% 50%;
-      margin-top: 11px;
+      margin-top: 22px;
       align-self: flex-start;
       cursor: pointer;
+      font-size: 18px;
   }
 
   .nav-search {
