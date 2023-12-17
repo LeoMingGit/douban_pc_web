@@ -15,4 +15,7 @@ public class MovieDetailVO {
     private  String  describe;
     private  String  summary ;
     private Integer  year;
+    private String goodRateStr;
+    private Integer goodCount;
+
 }

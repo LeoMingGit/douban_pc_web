@@ -15,6 +15,8 @@
           <div class="score-star">
             <rankstar :score="detailData.average" class="rankstar"/>
             <div class="score-comment"><a href="#">{{detailData.ratingPeople}}</a>人评价</div>
+            <div class="score-comment"><a href="#">{{detailData.goodRateStr}}</a>&nbsp; 好评率</div>
+            <div class="score-comment"><a href="#">{{detailData.goodCount}}</a>&nbsp; 好评数</div>
           </div>
         </div>
       </div>

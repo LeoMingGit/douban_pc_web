@@ -61,6 +61,11 @@ public class MoviesServiceImpl extends ServiceImpl<MoviesMapper, Movies>
             movieVO.setTags(formatTags(movie.getTags()));
             movieVO.setCountry(movie.getCountry());
             movieVO.setDescribe(movieVO.getCountry()+movieVO.getTags());
+            Double goodRate = movie.getGoodRate(); // Assuming goodRate is of type Double
+            String goodRatingStr = (goodRate != null) ? formatGoodRate(goodRate, 2) : "";
+            movieVO.setGoodRateStr(goodRatingStr);
+            Integer goodCount = movie.getGoodCount(); // Assuming goodCount is of type Integer
+            movieVO.setGoodCount(goodCount != null ? goodCount : 0);
             list.add(movieVO);
         }
         long totalSize = calculateTotalSize(moviesPage.getTotal(), pageSize);
@@ -90,6 +95,12 @@ public class MoviesServiceImpl extends ServiceImpl<MoviesMapper, Movies>
          movieVO.setDescribe(movieVO.getCountry()+movieVO.getTags());
          movieVO.setSummary(movie.getSummary());
          movieVO.setYear(movie.getYear());
+         movieVO.setGoodCount(movie.getGoodCount());
+         Double goodRate = movie.getGoodRate(); // Assuming goodRate is of type Double
+         String goodRatingStr = (goodRate != null) ? formatGoodRate(goodRate, 2) : "";
+         movieVO.setGoodRateStr(goodRatingStr);
+         Integer goodCount = movie.getGoodCount(); // Assuming goodCount is of type Integer
+         movieVO.setGoodCount(goodCount != null ? goodCount : 0);
          return  movieVO;
     }
 
@@ -111,7 +122,9 @@ public class MoviesServiceImpl extends ServiceImpl<MoviesMapper, Movies>
 
     public List<Movies> getTopMovies(int limit) {
         QueryWrapper<Movies> wrapper = new QueryWrapper<>();
-        wrapper.orderByDesc("rating");
+        wrapper.orderByDesc("goodCount");
+        wrapper.orderByDesc("goodCount");
+        wrapper.isNotNull("goodRate");
         wrapper.last("LIMIT 10");
         return moviesMapper.selectList(wrapper);
     }
@@ -122,7 +135,8 @@ public class MoviesServiceImpl extends ServiceImpl<MoviesMapper, Movies>
         Integer currentYeaer =Integer.valueOf(currentYear);
         QueryWrapper<Movies> wrapper = new QueryWrapper<>();
         wrapper.eq("year", currentYeaer);
-        wrapper.orderByDesc("rating");
+        wrapper.orderByDesc("goodCount");
+        wrapper.isNotNull("goodRate");
         wrapper.last("LIMIT " + limit);
         return moviesMapper.selectList(wrapper);
     }
@@ -135,7 +149,9 @@ public class MoviesServiceImpl extends ServiceImpl<MoviesMapper, Movies>
         Integer last5Year =currentYeaer-5;
         QueryWrapper<Movies> wrapper = new QueryWrapper<>();
         wrapper.between("year", last5Year, currentDate);
-        wrapper.orderByDesc("rating");
+        wrapper.orderByDesc("goodCount");
+        wrapper.isNotNull("goodRate");
+        wrapper.orderByDesc("goodCount");
         wrapper.last("LIMIT " + limit);
 
         return moviesMapper.selectList(wrapper);
@@ -156,11 +172,20 @@ public class MoviesServiceImpl extends ServiceImpl<MoviesMapper, Movies>
             movieItem.setTitle(movies.getName());
             movieItem.setCoverUrl(movies.getImg());
             movieItem.setRating(movies.getRating());
+            Double goodRate = movies.getGoodRate(); // Assuming goodRate is of type Double
+            String goodRatingStr = (goodRate != null) ? formatGoodRate(goodRate, 2) : "";
+            movieItem.setGoodRateStr(goodRatingStr);
+            movieItem.setGoodCount(movies.getGoodCount());
             topMovies.add(movieItem);
         }
         return topMovies;
     }
 
+    private static String formatGoodRate(double goodRate, int decimalPlaces) {
+        if (goodRate == 0.0) return "";
+        // Use String.format to format the double value with the specified number of decimal places
+        return String.format("%." + decimalPlaces + "f%%", goodRate * 100);
+    }
 
      private static String formatTags(String tagsJson) {
          try {

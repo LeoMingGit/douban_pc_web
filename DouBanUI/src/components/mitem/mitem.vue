@@ -7,7 +7,14 @@
         <rankstar :score="Number(itemData.rating)" />
         <span class="score-text">{{itemData.rating.toFixed(1)}}</span>
       </div>
+      <div class="score-content">
+        <span class="score-text">{{itemData.goodRateStr}}&nbsp;好评率</span>  
+      </div>
+      <div class="score-content">
+        <span class="score-text">{{itemData.goodCount}}&nbsp;好评数</span>  
+      </div>
     </div>
+    
     <div class="no-score" v-else> 暂无评分 </div>
   </div>
 </template>

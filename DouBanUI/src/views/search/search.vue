@@ -10,6 +10,8 @@
           <div class="rank-content">
             <rankstar :score="item.average" class="rank-star"></rankstar>
             <div class="score-text">{{item.average}}</div>
+            <div class="goodRate">{{item.goodRateStr}} <span>好评率</span></div>
+            <div class="goodRate">{{item.goodCount}} <span>好评数</span></div>
           </div>
           <div class="place">{{item.describe}}</div>
         </div>
@@ -126,6 +128,15 @@
     }
     .score-text {
       color: #e09015;
+    }
+  }
+  .goodRate {
+
+    margin-left: 10px;
+    color: #e09015;
+
+    span {
+      font-weight: 500;
     }
   }
   

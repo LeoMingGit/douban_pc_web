@@ -14,4 +14,9 @@ public class MovieVO {
     private  String country;
     private  String  describe;
 
+    private  String goodRateStr;
+
+    private  Integer goodCount;
+
+
 }

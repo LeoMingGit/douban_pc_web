@@ -8,60 +8,70 @@ import java.io.Serializable;
 import lombok.Data;
 
 /**
- * 
+ *
  * @TableName movies
  */
 @TableName(value ="movies")
 @Data
 public class Movies implements Serializable {
     /**
-     * 
+     *
      */
     @TableId(type = IdType.AUTO)
     private Integer id;
 
     /**
-     * 
+     *
      */
     private String name;
 
     /**
-     * 
+     *
      */
     private Integer year;
 
     /**
-     * 
+     *
      */
     private Double rating;
 
     /**
-     * 
+     *
+     */
+    private Double goodRate;
+
+    /**
+     *
+     */
+    private Integer  goodCount;
+
+    /**
+     *
      */
     private Integer ratingsum;
 
     /**
-     * 
+     *
      */
     private String img;
 
     /**
-     * 
+     *
      */
     private String tags;
 
     /**
-     * 
+     *
      */
     private String summary;
 
     /**
-     * 
+     *
      */
     private String genre;
 
     /**
-     * 
+     *
      */
     private String country;
 
@@ -125,6 +135,8 @@ public class Movies implements Serializable {
         sb.append(", summary=").append(summary);
         sb.append(", genre=").append(genre);
         sb.append(", country=").append(country);
+        sb.append(", goodRate=").append(goodRate);
+        sb.append(", goodCount=").append(goodCount);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
