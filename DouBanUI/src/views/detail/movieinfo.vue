@@ -1,52 +1,30 @@
 <template>
-  <div class="movie-info"  v-if="detailData.id">
-    <h1 class="title">{{detailData.title}} {{detailData.original_title}}<span class="year">（{{detailData.year}}）</span></h1>
+  <div class="movie-info"  v-if="detailData.movieId">
+    <h1 class="title">{{detailData.movieName}}<span class="year">（{{detailData.year}}）</span></h1>
     <div class="desc-content" >
-      <img class="mv-img" :src="detailData.cover_url" />
+      <img class="mv-img" :src="detailData.picUrl" />
       <div class="mv-desc">
-        <p>导演: <a href="#" v-if="detailData.directors && detailData.directors.length"> {{detailData.directors[0].name}}</a></p>
-        <p>主演: <a href="#" v-for="(item,index) in actors.short" :key="index">{{item.name}} <template v-if="index != actors.short.length -1">/</template> </a><span @click="expand" class="more-actors" v-if="actors.isShowMore">更多..</span></p>
-        <p>类型: <span class="it">{{detailData.genres.join('/')}}</span></p>
-        <p>制片国家/地区: <span class="it">{{detailData.countries.join('/')}}</span></p>
-        <p>语言: <span class="it">{{detailData.languages.join('/')}}</span></p>
-        <p>上映日期: <span class="it">{{detailData.pubdate.join('/')}}</span></p>
-        <p>片长: <span class="it">{{detailData.durations.join('/')}}</span></p>
-        <p>又名: <span class="it">{{detailData.aka.join('/')}}</span></p>
+        <p>类型: <span class="it">{{detailData.genre}}</span></p>
+        <p>标签: <span class="it">{{detailData.tags}}</span></p>
+        <p>制片国家/地区: <span class="it">{{detailData.country}}</span></p>        
       </div>
       <div class="mv-rank">
         <div class="rank-title">豆瓣评分</div>
         <div class="rank-score">
-          <div class="score"><strong class="num">{{detailData.rating.value}}</strong></div>
+          <div class="score"><strong class="num">{{detailData.average}}</strong></div>
           <div class="score-star">
-            <rankstar :score="detailData.rating.value" class="rankstar"/>
-            <div class="score-comment"><a href="#">{{detailData.rating.count}}</a>人评价</div>
+            <rankstar :score="detailData.average" class="rankstar"/>
+            <div class="score-comment"><a href="#">{{detailData.ratingPeople}}</a>人评价</div>
           </div>
         </div>
-        <!-- <div class="score-rate">
-          <div v-for="(item) in rate.list" class="rate-item" :key="item.index">
-            <span>{{item.index}} 星</span>
-            <span class="wline" :style="{width:item.width+'px'}"></span>
-            <span class="percent">{{item.count.toFixed(1)}} %</span>
-          </div>
-        </div>
-        <div class="better-content">
-          <div v-for="(item,index) in rate.betterList" class="better-item">好于 <a href="#">{{(item.rank*100).toFixed(1)+'%'}} {{item.type}}</a></div>
-        </div> -->
       </div>
     </div>
-    <!-- <div class="opera-box">
-      <div>请评分：</div>
-      <div>
-        <img src="https://img3.doubanio.com/f/shire/5bbf02b7b5ec12b23e214a580b6f9e481108488c/pics/add-review.gif">&nbsp;
-        <a href="javascript:void(0)" class="comment-link" @click="goPublish">写影评</a>
-      </div>
-    </div> -->
     <div class="intro">
       <h2 class="intro-title">
-        {{detailData.title}}的剧情简介· · · · · ·
+        {{detailData.movieName}}的剧情简介· · · · · ·
       </h2>
       <div style="text-indent:20px;">
-        {{detailData.intro}}
+        {{detailData.summary}}
       </div>
     </div>
   </div>
@@ -59,6 +37,7 @@
   import configapi from '@/utils/configapi'
   import Vuex from 'vuex'
   import {useRoute} from 'vue-router'
+import { getMovieDetailById } from '../../api/film'
   /**
    * 待办事项页面组件
    */
@@ -74,7 +53,7 @@
       }
     },
     mounted() {
-       alert(this.movieId)
+      this.dotgetMovieDetailById();
     },
     setup(){
       const store = Vuex.useStore()
@@ -89,46 +68,11 @@
         betterList:[]
       })
       const route = useRoute()
-      let id = computed(() => route.query.id);
-      onMounted(async () => {
-        
-        detailData.value = await service.get(configapi.detail(id.value),{})
-
-        store.commit('setTitle',detailData.value.title)
-
-        actors.orgin = detailData.value.actors||[]
-        actors.short = actors.orgin.slice(0,3)
-        actors.isShowMore = actors.orgin.length > 3
-
-
-        let rateData = await service.get(configapi.rate(id.value),{})
-
-        rate.list = dealRateData(rateData)
-        rate.betterList = rateData.type_ranks||[]
-
-      });
-
-      const dealRateData = (rateData)=>{
-        let maxwidth = 70
-        let list = []
-
-        for (let i = 0 ; i < rateData.stats.length ; i++) {
-          let r = rateData.stats[i].toFixed(3)*100
-          list.push({
-            index: i+1,
-            count:r,
-            width: r*maxwidth/100
-          })
-        }
-        return list.reverse()
-      }
 
       const expand = ()=>{
         actors.short = actors.orgin
         actors.isShowMore = false
       }
-
-      
       
       return {
         detailData,
@@ -144,6 +88,17 @@
         } else {
           this.$router.push('/login')
         }
+      },
+      dotgetMovieDetailById() {
+        var me = this;
+        getMovieDetailById(this.movieId).then(res => {
+          if (res.status === 200) {
+             debugger
+             me.detailData=res.data;
+          }
+        }).catch(err => {
+          console.log(err);
+        })
       }
     }
   }

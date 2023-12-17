@@ -69,7 +69,6 @@
 
     },
     mounted: function() {
-      debugger
        this.keyword= this.$route.query.searchText;
        this.dotGetMoviesByKeyword();
     },

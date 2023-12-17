@@ -21,8 +21,8 @@ export function getMoviesByKeyword(data) {
  * @param {number} pageSize - The number of items per page.
  * @returns {Promise} A Promise that resolves with the response data.
  */
-export function getMoviesByMovieId(movieId, pageIndex, pageSize) {
-  const url = 'movies/findByMovieId';
+export function getCommentsByMovieId(movieId, pageIndex, pageSize) {
+  const url = 'movies/getCommentsByMovieId';
   const params = {
     movieId: movieId,
     pageIndex: pageIndex,
@@ -47,12 +47,5 @@ export function getMoviesByMovieId(movieId, pageIndex, pageSize) {
  */
 export function getMovieDetailById(id) {
   const url = `movies/detail?id=${id}`;
-
-  return service.get(url)
-    .then(response => response.data)
-    .catch(error => {
-      // Handle error
-      console.error('Error fetching movie details:', error);
-      throw error; // You may want to handle or log the error differently
-    });
+  return service.get(url);
 }

@@ -64,7 +64,7 @@
       }
     },
     mounted() {
-      alert(this.movieId)
+ 
     },
 
   }
