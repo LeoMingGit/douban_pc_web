@@ -24,7 +24,6 @@ public class CommentsServiceImpl extends ServiceImpl<CommentsMapper, Comments>
     @Resource
     private  CommentsMapper commentsMapper;
 
-
     @Override
     public PagingDto<Comments> findByMovieId(Integer movieId,Integer type, Page<Comments> page) {
         QueryWrapper<Comments> queryWrapper = new QueryWrapper<>();

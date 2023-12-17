@@ -10,22 +10,47 @@
           </div>
       </div>
       <div class="recent-play play-section">
-          <h2 class="title">历年好评作品</h2>
-          <div class="section-bottom" v-if="recentplayList && recentplayList.length">
+          <h2 class="title">历年好评作品（2019）</h2>
+          <div class="section-bottom" v-if="recentplayList.filter(movie => movie.year === 2019) && recentplayList.filter(movie => movie.year === 2019).length">
             <slider>
-                 <mitem v-for="(_item,_index) in recentplayList" :itemData="_item" :key="_item.id" /> 
+                 <mitem v-for="(_item,_index) in recentplayList.filter(movie => movie.year === 2019).sort((a, b) => b.goodCount - a.goodCount)" :itemData="_item" :key="_item.id" /> 
+             </slider>
+          </div>
+      </div>
+      <div class="recent-play play-section">
+          <h2 class="title">历年好评作品（2018）</h2>
+          <div class="section-bottom" v-if="recentplayList.filter(movie => movie.year === 2018) && recentplayList.filter(movie => movie.year === 2018).length">
+            <slider>
+                 <mitem v-for="(_item,_index) in recentplayList.filter(movie => movie.year === 2018).sort((a, b) => b.goodCount - a.goodCount)" :itemData="_item" :key="_item.id" /> 
+             </slider>
+          </div>
+      </div>
+      <div class="recent-play play-section">
+          <h2 class="title">历年好评作品（2017）</h2>
+          <div class="section-bottom" v-if="recentplayList.filter(movie => movie.year === 2017) && recentplayList.filter(movie => movie.year === 2017).length">
+            <slider>
+                 <mitem v-for="(_item,_index) in recentplayList.filter(movie => movie.year === 2017).sort((a, b) => b.goodCount - a.goodCount)" :itemData="_item" :key="_item.id" /> 
+             </slider>
+          </div>
+      </div>
+      <div class="recent-play play-section">
+          <h2 class="title">历年好评作品（2016）</h2>
+          <div class="section-bottom" v-if="recentplayList.filter(movie => movie.year === 2016) && recentplayList.filter(movie => movie.year === 2016).length">
+            <slider>
+                 <mitem v-for="(_item,_index) in recentplayList.filter(movie => movie.year === 2016).sort((a, b) => b.goodCount - a.goodCount)" :itemData="_item" :key="_item.id" /> 
+             </slider>
+          </div>
+      </div>
+      <div class="recent-play play-section">
+          <h2 class="title">历年好评作品（2015）</h2>
+          <div class="section-bottom" v-if="recentplayList.filter(movie => movie.year === 2015) && recentplayList.filter(movie => movie.year === 2015).length">
+            <slider>
+                 <mitem v-for="(_item,_index) in recentplayList.filter(movie => movie.year === 2015).sort((a, b) => b.goodCount - a.goodCount)" :itemData="_item" :key="_item.id" /> 
              </slider>
           </div>
       </div>
     </div>
-    <div class="right-content">
-      <div class="top-rank">
-        <h2 class="title">年度作品</h2>
-        <div v-for="(item,index) in rankList" :key="index" class="rank-item">
-          {{index+1}}<router-link :to="'/detail?id='+item.id"  class="rank-link">{{item.title}}</router-link>
-        </div>
-      </div>
-    </div>
+
   </div>
 </template>
 
@@ -109,7 +134,7 @@
     min-height: 344px;
   }
   .recent-play {
-    min-height: 565px;
+    min-height: 365px;
   }
   .play-section {
     padding: 15px;

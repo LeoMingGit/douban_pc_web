@@ -11,7 +11,7 @@
         <span class="score-text">{{itemData.goodRateStr}}&nbsp;好评率</span>  
       </div>
       <div class="score-content">
-        <span class="score-text">{{itemData.goodCount}}&nbsp;好评数</span>  
+        <span class="score-text">{{itemData.goodCount==null ? 0:itemData.goodCount}}&nbsp;好评数</span>  
       </div>
     </div>
     

@@ -16,7 +16,7 @@ npm run dev:ssr
 
 ### 生产模式打包
 ```
-npm run build
+
 ```
 
 ### 生产模式预览

@@ -3,7 +3,9 @@ package com.step.template.main.service.impl;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONException;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.step.template.main.entity.Movies;
+ import com.step.template.main.entity.Movies;
+import com.step.template.main.entity.TopMoviesView5;
+import com.step.template.main.entity.TopMoviesViewGood;
 import com.step.template.main.page.PagingDto;
 import com.step.template.main.service.MoviesService;
 import com.step.template.main.mapper.MoviesMapper;
@@ -21,7 +23,8 @@ import java.time.LocalDate;
 import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
-
+import com.step.template.main.mapper.TopMoviesView5Mapper;
+import com.step.template.main.mapper.TopMoviesViewGoodMapper;
 /**
 * @author 李响
 * @description 针对表【movies】的数据库操作Service实现
@@ -33,7 +36,10 @@ public class MoviesServiceImpl extends ServiceImpl<MoviesMapper, Movies>
 
     @Resource
     private MoviesMapper moviesMapper;
-
+    @Resource
+    private TopMoviesView5Mapper topMoviesView5Mapper;
+    @Resource
+    private TopMoviesViewGoodMapper topMoviesViewGoodMapper;
     /**
      *
      * @param keyword
@@ -108,54 +114,30 @@ public class MoviesServiceImpl extends ServiceImpl<MoviesMapper, Movies>
     public MovieListVO GetTopRankMovies(){
 
         MovieListVO result =new MovieListVO();
-        List<MovieItem> topRankMovies =  convertToMovieItem(getTopMoviesToday(10));
-        List<MovieItem> NowplayList =  convertToMovieItem(getTopMovies(10));
+         List<MovieItem> NowplayList =  convertToMovieItem2(getTopMovies(10));
         List<MovieItem> RecentplayList =  convertToMovieItem(getTopMoviesLast5Years(10));
 
 
-        result.setRankList(topRankMovies); //年度作品
-        result.setNowplayList(NowplayList);//好评榜
+         result.setNowplayList(NowplayList);//好评榜
         result.setRecentplayList(RecentplayList); //5年内好评
 
         return  result;
     }
 
-    public List<Movies> getTopMovies(int limit) {
-        QueryWrapper<Movies> wrapper = new QueryWrapper<>();
-        wrapper.orderByDesc("goodCount");
-        wrapper.orderByDesc("goodCount");
-        wrapper.isNotNull("goodRate");
-        wrapper.last("LIMIT 10");
-        return moviesMapper.selectList(wrapper);
+    public List<TopMoviesViewGood> getTopMovies(int limit) {
+        QueryWrapper<TopMoviesViewGood> queryWrapper = new QueryWrapper<>();
+        List<TopMoviesViewGood> list =topMoviesViewGoodMapper.selectList(queryWrapper);
+          return list;
     }
 
-    public List<Movies> getTopMoviesToday(int limit) {
-        LocalDate currentDate = LocalDate.now();
-        int currentYear = Year.from(currentDate).getValue();
-        Integer currentYeaer =Integer.valueOf(currentYear);
-        QueryWrapper<Movies> wrapper = new QueryWrapper<>();
-        wrapper.eq("year", currentYeaer);
-        wrapper.orderByDesc("goodCount");
-        wrapper.isNotNull("goodRate");
-        wrapper.last("LIMIT " + limit);
-        return moviesMapper.selectList(wrapper);
+
+    public List<TopMoviesView5> getTopMoviesLast5Years(int limit) {
+        QueryWrapper<TopMoviesView5> queryWrapper = new QueryWrapper<>();
+        queryWrapper.isNotNull("goodCount").gt("goodCount", 0);
+        List<TopMoviesView5> resultList = topMoviesView5Mapper.selectList(queryWrapper);
+         return resultList;
     }
 
-    public List<Movies> getTopMoviesLast5Years(int limit) {
-
-        LocalDate currentDate = LocalDate.now();
-        int currentYear = Year.from(currentDate).getValue();
-        Integer currentYeaer =Integer.valueOf(currentYear);
-        Integer last5Year =currentYeaer-5;
-        QueryWrapper<Movies> wrapper = new QueryWrapper<>();
-        wrapper.between("year", last5Year, currentDate);
-        wrapper.orderByDesc("goodCount");
-        wrapper.isNotNull("goodRate");
-        wrapper.orderByDesc("goodCount");
-        wrapper.last("LIMIT " + limit);
-
-        return moviesMapper.selectList(wrapper);
-    }
 
 
     /**
@@ -163,19 +145,39 @@ public class MoviesServiceImpl extends ServiceImpl<MoviesMapper, Movies>
      * @param moviesList
      * @return
      */
-    public List<MovieItem> convertToMovieItem(List<Movies> moviesList) {
+    public List<MovieItem> convertToMovieItem(List<TopMoviesView5> moviesList) {
         List<MovieItem> topMovies = new ArrayList<>();
 
-        for (Movies movies : moviesList) {
+        for (TopMoviesView5 movies : moviesList) {
             MovieItem movieItem = new MovieItem();
             movieItem.setId(movies.getId());
             movieItem.setTitle(movies.getName());
             movieItem.setCoverUrl(movies.getImg());
-            movieItem.setRating(movies.getRating());
-            Double goodRate = movies.getGoodRate(); // Assuming goodRate is of type Double
+            movieItem.setRating(movies.getGoodrate());
+            Double goodRate = movies.getGoodrate(); // Assuming goodRate is of type Double
             String goodRatingStr = (goodRate != null) ? formatGoodRate(goodRate, 2) : "";
             movieItem.setGoodRateStr(goodRatingStr);
-            movieItem.setGoodCount(movies.getGoodCount());
+            movieItem.setGoodCount(movies.getGoodcount());
+            movieItem.setYear(movies.getYear());
+            topMovies.add(movieItem);
+        }
+        return topMovies;
+    }
+
+    public List<MovieItem> convertToMovieItem2(List<TopMoviesViewGood> moviesList) {
+        List<MovieItem> topMovies = new ArrayList<>();
+
+        for (TopMoviesViewGood movies : moviesList) {
+            MovieItem movieItem = new MovieItem();
+            movieItem.setId(movies.getId());
+            movieItem.setTitle(movies.getName());
+            movieItem.setCoverUrl(movies.getImg());
+            movieItem.setRating(movies.getGoodrate());
+            Double goodRate = movies.getGoodrate(); // Assuming goodRate is of type Double
+            String goodRatingStr = (goodRate != null) ? formatGoodRate(goodRate, 2) : "";
+            movieItem.setGoodRateStr(goodRatingStr);
+            movieItem.setGoodCount(movies.getGoodcount());
+            movieItem.setYear(movies.getYear());
             topMovies.add(movieItem);
         }
         return topMovies;

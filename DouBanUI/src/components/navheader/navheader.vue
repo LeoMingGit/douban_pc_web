@@ -3,7 +3,7 @@
     <div class="nav-header">
         <div class="nav-logo" @click="$router.push('/')">好评电影网</div>
         <div class="nav-search">
-            <input id="inp" placeholder="搜索电影、电视剧、综艺、影人" v-model.trim="searchText"/>
+            <input id="inp"   v-model.trim="searchText"/>
             <div class="search-btn" @click="goSearch"></div>
         </div>
         <div v-if="user.nickname" class="nickname">

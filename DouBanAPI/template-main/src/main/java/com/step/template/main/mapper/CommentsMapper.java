@@ -2,6 +2,9 @@ package com.step.template.main.mapper;
 
 import com.step.template.main.entity.Comments;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.step.template.main.entity.Movies;
+
+import java.util.List;
 
 /**
 * @author 李响
@@ -10,6 +13,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 * @Entity com.step.template.main.entity.Comments
 */
 public interface CommentsMapper extends BaseMapper<Comments> {
+
 
 }
 

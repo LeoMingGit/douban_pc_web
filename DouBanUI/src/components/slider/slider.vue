@@ -4,8 +4,8 @@
       <slot></slot>
     </div>
     <div class="control">
-      <div class="left" @click="prePage"></div>
-      <div class="right" @click="nextPage"></div>
+      <div class="left" @click="prePage" v-if="false"></div>
+      <div class="right" @click="nextPage"  v-if="false"></div>
     </div>
   </div>
 </template>

@@ -14,4 +14,5 @@ public class MovieItem {
     private Integer id; // Assuming id is a long
     private  String goodRateStr;
     private  Integer goodCount;
+    private  Integer year;
 }

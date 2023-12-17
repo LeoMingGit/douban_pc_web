@@ -23,4 +23,5 @@
         tags,summary,genre,
         country
     </sql>
+    <select id="getTopMovies" resultType="com.step.template.main.entity.Movies"></select>
 </mapper>
