@@ -1,11 +1,11 @@
 <template>
   <div class="mv-item" @click="goDetail">
-    <img class="top-img" :src="itemData.cover.url" />
+    <img class="top-img" :src="itemData.coverUrl" />
     <div class="title one-line">{{itemData.title}}</div>
     <div class="score" v-if="itemData.rating">
       <div class="score-content">
-        <rankstar :score="Number(itemData.rating.value)" />
-        <span class="score-text">{{itemData.rating.value.toFixed(1)}}</span>
+        <rankstar :score="Number(itemData.rating)" />
+        <span class="score-text">{{itemData.rating.toFixed(1)}}</span>
       </div>
     </div>
     <div class="no-score" v-else> 暂无评分 </div>

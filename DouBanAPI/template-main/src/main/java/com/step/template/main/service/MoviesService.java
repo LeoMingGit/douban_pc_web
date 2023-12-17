@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.step.template.main.entity.Movies;
 import com.step.template.main.page.PagingDto;
 import com.step.template.main.vo.MovieDetailVO;
+import com.step.template.main.vo.MovieListVO;
 import com.step.template.main.vo.MovieVO;
 
 import java.util.List;
@@ -21,4 +22,5 @@ public interface MoviesService extends IService<Movies> {
 
     MovieDetailVO getMovieDetailById(Integer id);
 
+    MovieListVO GetTopRankMovies();
 }

@@ -2,7 +2,7 @@
   <div class="home-container">
     <div class="left-content">
       <div class="now-play play-section">
-          <h2 class="title">正在热映</h2>
+          <h2 class="title">好评榜</h2>
           <div class="section-bottom" v-if="nowplayList && nowplayList.length">
             <slider>
               <mitem v-for="item in nowplayList" :itemData="item" :key="item.id" /> 
@@ -10,19 +10,17 @@
           </div>
       </div>
       <div class="recent-play play-section">
-          <h2 class="title">最近热门电影</h2>
+          <h2 class="title">历年好评作品</h2>
           <div class="section-bottom" v-if="recentplayList && recentplayList.length">
             <slider>
-              <div v-for="(item,index) in recentplayList" :key="index" class="recent-item">
-                <mitem v-for="(_item,_index) in item" :itemData="_item" :key="_item.id" /> 
-              </div>
-            </slider>
+                 <mitem v-for="(_item,_index) in recentplayList" :itemData="_item" :key="_item.id" /> 
+             </slider>
           </div>
       </div>
     </div>
     <div class="right-content">
       <div class="top-rank">
-        <h2 class="title">一周口碑榜</h2>
+        <h2 class="title">年度作品</h2>
         <div v-for="(item,index) in rankList" :key="index" class="rank-item">
           {{index+1}}<router-link :to="'/detail?id='+item.id"  class="rank-link">{{item.title}}</router-link>
         </div>
@@ -40,6 +38,7 @@
   import Vuex from 'vuex'
   import configapi from '@/utils/configapi'
   import { useStore } from 'vuex'
+  import { getTop } from '../../api/film';
   /**
    * 首页页面组件
    */
@@ -56,16 +55,35 @@
     setup(){
       const store = useStore()
       // 从store获取数据
-      let nowplayList = computed(()=> store.state.nowplayList)
-      let recentplayList = computed(()=> store.state.recentplayList)
-      let rankList = computed(()=> store.state.rankList)
+      let nowplayList = ref([]);
+      let recentplayList = ref([]);
+      let rankList = ref([]);
 
       return {
         nowplayList,
         recentplayList,
         rankList
       }
-    }
+    },
+    mounted: function() {
+      this.dotgetTop();
+    },
+    methods: {
+      dotgetTop() {
+        var me = this;
+        getTop().then(res => {
+          if (res.status === 200) {
+              debugger
+             me.nowplayList=res.data.nowplayList;
+             me.recentplayList=res.data.recentplayList;
+             me.rankList=res.data.rankList;
+
+          }
+        }).catch(err => {
+          console.log(err);
+        })
+      }
+   }
   }
 </script>
 <style scoped lang="less">

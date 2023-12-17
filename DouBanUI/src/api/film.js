@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const service = axios.create({
-  baseURL: 'http://localhost:8099', // api 的 base_url
+  baseURL: 'http://117.72.43.18//douban-api', // api 的 base_url
   timeout: 5000, // 请求超时时间
 });
 
@@ -31,4 +31,11 @@ export function getCommentsByMovieId(data) {
 export function getMovieDetailById(id) {
   const url = `movies/detail?id=${id}`;
   return service.get(url);
+}
+
+/**
+ * 获取Top电影数据
+ */
+export function getTop() {
+  return service.get('movies/top');
 }

@@ -9,6 +9,7 @@ import com.step.template.main.page.PagingDto;
 import com.step.template.main.service.CommentsService;
 import com.step.template.main.service.MoviesService;
 import com.step.template.main.vo.MovieDetailVO;
+import com.step.template.main.vo.MovieListVO;
 import com.step.template.main.vo.MovieVO;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +17,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import java.util.ArrayList;
-import java.util.List;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONException;
 @RestController
 @RequestMapping("/movies")
 public class MoviesController {
@@ -55,6 +52,16 @@ public class MoviesController {
     }
 
     /**
+     * 获取年度电影
+     * @return
+     */
+    @GetMapping("/top")
+    public MovieListVO top() {
+        return moviesService.GetTopRankMovies();
+    }
+
+
+    /**
      *
      * @param movieId
      *  @param type 0 1 2
@@ -70,6 +77,8 @@ public class MoviesController {
         Page<Comments> page = new Page<>(current, size);
         return commentsService.findByMovieId(movieId,type, page);
     }
+
+
 
 
 }

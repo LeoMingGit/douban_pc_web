@@ -8,6 +8,8 @@ import com.step.template.main.page.PagingDto;
 import com.step.template.main.service.MoviesService;
 import com.step.template.main.mapper.MoviesMapper;
 import com.step.template.main.vo.MovieDetailVO;
+import com.step.template.main.vo.MovieItem;
+import com.step.template.main.vo.MovieListVO;
 import com.step.template.main.vo.MovieVO;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -15,6 +17,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import javax.annotation.Resource;
+import java.time.LocalDate;
+import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,6 +93,73 @@ public class MoviesServiceImpl extends ServiceImpl<MoviesMapper, Movies>
          return  movieVO;
     }
 
+    @Override
+    public MovieListVO GetTopRankMovies(){
+
+        MovieListVO result =new MovieListVO();
+        List<MovieItem> topRankMovies =  convertToMovieItem(getTopMoviesToday(10));
+        List<MovieItem> NowplayList =  convertToMovieItem(getTopMovies(10));
+        List<MovieItem> RecentplayList =  convertToMovieItem(getTopMoviesLast5Years(10));
+
+
+        result.setRankList(topRankMovies); //年度作品
+        result.setNowplayList(NowplayList);//好评榜
+        result.setRecentplayList(RecentplayList); //5年内好评
+
+        return  result;
+    }
+
+    public List<Movies> getTopMovies(int limit) {
+        QueryWrapper<Movies> wrapper = new QueryWrapper<>();
+        wrapper.orderByDesc("rating");
+        wrapper.last("LIMIT 10");
+        return moviesMapper.selectList(wrapper);
+    }
+
+    public List<Movies> getTopMoviesToday(int limit) {
+        LocalDate currentDate = LocalDate.now();
+        int currentYear = Year.from(currentDate).getValue();
+        Integer currentYeaer =Integer.valueOf(currentYear);
+        QueryWrapper<Movies> wrapper = new QueryWrapper<>();
+        wrapper.eq("year", currentYeaer);
+        wrapper.orderByDesc("rating");
+        wrapper.last("LIMIT " + limit);
+        return moviesMapper.selectList(wrapper);
+    }
+
+    public List<Movies> getTopMoviesLast5Years(int limit) {
+
+        LocalDate currentDate = LocalDate.now();
+        int currentYear = Year.from(currentDate).getValue();
+        Integer currentYeaer =Integer.valueOf(currentYear);
+        Integer last5Year =currentYeaer-5;
+        QueryWrapper<Movies> wrapper = new QueryWrapper<>();
+        wrapper.between("year", last5Year, currentDate);
+        wrapper.orderByDesc("rating");
+        wrapper.last("LIMIT " + limit);
+
+        return moviesMapper.selectList(wrapper);
+    }
+
+
+    /**
+     *
+     * @param moviesList
+     * @return
+     */
+    public List<MovieItem> convertToMovieItem(List<Movies> moviesList) {
+        List<MovieItem> topMovies = new ArrayList<>();
+
+        for (Movies movies : moviesList) {
+            MovieItem movieItem = new MovieItem();
+            movieItem.setId(movies.getId());
+            movieItem.setTitle(movies.getName());
+            movieItem.setCoverUrl(movies.getImg());
+            movieItem.setRating(movies.getRating());
+            topMovies.add(movieItem);
+        }
+        return topMovies;
+    }
 
 
      private static String formatTags(String tagsJson) {
