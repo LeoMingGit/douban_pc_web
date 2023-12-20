@@ -153,7 +153,7 @@ public class MoviesServiceImpl extends ServiceImpl<MoviesMapper, Movies>
             movieItem.setId(movies.getId());
             movieItem.setTitle(movies.getName());
             movieItem.setCoverUrl(movies.getImg());
-            movieItem.setRating(movies.getGoodrate());
+            movieItem.setRating(movies.getRating());
             Double goodRate = movies.getGoodrate(); // Assuming goodRate is of type Double
             String goodRatingStr = (goodRate != null) ? formatGoodRate(goodRate, 2) : "";
             movieItem.setGoodRateStr(goodRatingStr);
@@ -172,7 +172,7 @@ public class MoviesServiceImpl extends ServiceImpl<MoviesMapper, Movies>
             movieItem.setId(movies.getId());
             movieItem.setTitle(movies.getName());
             movieItem.setCoverUrl(movies.getImg());
-            movieItem.setRating(movies.getGoodrate());
+            movieItem.setRating(movies.getRating());
             Double goodRate = movies.getGoodrate(); // Assuming goodRate is of type Double
             String goodRatingStr = (goodRate != null) ? formatGoodRate(goodRate, 2) : "";
             movieItem.setGoodRateStr(goodRatingStr);

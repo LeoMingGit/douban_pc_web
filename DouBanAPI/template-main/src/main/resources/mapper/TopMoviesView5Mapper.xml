@@ -11,10 +11,12 @@
             <result property="img" column="img" jdbcType="VARCHAR"/>
             <result property="goodcount" column="goodCount" jdbcType="INTEGER"/>
             <result property="goodrate" column="goodRate" jdbcType="DOUBLE"/>
+            <result property="rating" column="rating" jdbcType="FLOAT"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,name,year,
-        img,goodCount,goodRate
+        img,goodCount,goodRate,
+        rating
     </sql>
 </mapper>

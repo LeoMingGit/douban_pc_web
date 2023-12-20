@@ -44,6 +44,11 @@ public class TopMoviesView5 implements Serializable {
      */
     private Double goodrate;
 
+    /**
+     * 
+     */
+    private Double rating;
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 
@@ -64,7 +69,8 @@ public class TopMoviesView5 implements Serializable {
             && (this.getYear() == null ? other.getYear() == null : this.getYear().equals(other.getYear()))
             && (this.getImg() == null ? other.getImg() == null : this.getImg().equals(other.getImg()))
             && (this.getGoodcount() == null ? other.getGoodcount() == null : this.getGoodcount().equals(other.getGoodcount()))
-            && (this.getGoodrate() == null ? other.getGoodrate() == null : this.getGoodrate().equals(other.getGoodrate()));
+            && (this.getGoodrate() == null ? other.getGoodrate() == null : this.getGoodrate().equals(other.getGoodrate()))
+            && (this.getRating() == null ? other.getRating() == null : this.getRating().equals(other.getRating()));
     }
 
     @Override
@@ -77,6 +83,7 @@ public class TopMoviesView5 implements Serializable {
         result = prime * result + ((getImg() == null) ? 0 : getImg().hashCode());
         result = prime * result + ((getGoodcount() == null) ? 0 : getGoodcount().hashCode());
         result = prime * result + ((getGoodrate() == null) ? 0 : getGoodrate().hashCode());
+        result = prime * result + ((getRating() == null) ? 0 : getRating().hashCode());
         return result;
     }
 
@@ -92,6 +99,7 @@ public class TopMoviesView5 implements Serializable {
         sb.append(", img=").append(img);
         sb.append(", goodcount=").append(goodcount);
         sb.append(", goodrate=").append(goodrate);
+        sb.append(", rating=").append(rating);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();
