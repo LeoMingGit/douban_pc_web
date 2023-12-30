@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.step.template.main.mapper.Top10MoviesTbMapper">
+
+    <resultMap id="BaseResultMap" type="com.step.template.main.entity.Top10MoviesTb">
+            <result property="movieid" column="movieId" jdbcType="INTEGER"/>
+            <result property="totalcount2" column="totalCount2" jdbcType="BIGINT"/>
+            <result property="likecount2" column="likeCount2" jdbcType="DECIMAL"/>
+            <result property="goodrate2" column="goodRate2" jdbcType="DECIMAL"/>
+            <result property="id" column="id" jdbcType="INTEGER"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="year" column="year" jdbcType="INTEGER"/>
+            <result property="rating" column="rating" jdbcType="FLOAT"/>
+            <result property="ratingsum" column="ratingsum" jdbcType="INTEGER"/>
+            <result property="img" column="img" jdbcType="VARCHAR"/>
+            <result property="tags" column="tags" jdbcType="VARCHAR"/>
+            <result property="summary" column="summary" jdbcType="VARCHAR"/>
+            <result property="genre" column="genre" jdbcType="VARCHAR"/>
+            <result property="country" column="country" jdbcType="VARCHAR"/>
+            <result property="goodrate" column="goodRate" jdbcType="DOUBLE"/>
+            <result property="goodcount" column="goodCount" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        movieId,totalCount2,likeCount2,
+        goodRate2,id,name,
+        year,rating,ratingsum,
+        img,tags,summary,
+        genre,country,goodRate,
+        goodCount
+    </sql>
+</mapper>

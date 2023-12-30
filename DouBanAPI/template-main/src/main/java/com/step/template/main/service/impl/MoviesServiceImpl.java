@@ -4,8 +4,10 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONException;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
  import com.step.template.main.entity.Movies;
-import com.step.template.main.entity.TopMoviesView5;
-import com.step.template.main.entity.TopMoviesViewGood;
+import com.step.template.main.entity.Top10MoviesTb;
+import com.step.template.main.entity.Top5yearMoviesTb;
+import com.step.template.main.mapper.Top10MoviesTbMapper;
+import com.step.template.main.mapper.Top5yearMoviesTbMapper;
 import com.step.template.main.page.PagingDto;
 import com.step.template.main.service.MoviesService;
 import com.step.template.main.mapper.MoviesMapper;
@@ -19,13 +21,12 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
-import com.step.template.main.mapper.TopMoviesView5Mapper;
-import com.step.template.main.mapper.TopMoviesViewGoodMapper;
-/**
+ /**
 * @author 李响
 * @description 针对表【movies】的数据库操作Service实现
 * @createDate 2023-12-16 23:03:45
@@ -37,9 +38,9 @@ public class MoviesServiceImpl extends ServiceImpl<MoviesMapper, Movies>
     @Resource
     private MoviesMapper moviesMapper;
     @Resource
-    private TopMoviesView5Mapper topMoviesView5Mapper;
+    private Top5yearMoviesTbMapper top5yearMoviesTbMapper;
     @Resource
-    private TopMoviesViewGoodMapper topMoviesViewGoodMapper;
+    private Top10MoviesTbMapper top10MoviesTbMapper;
     /**
      *
      * @param keyword
@@ -124,17 +125,17 @@ public class MoviesServiceImpl extends ServiceImpl<MoviesMapper, Movies>
         return  result;
     }
 
-    public List<TopMoviesViewGood> getTopMovies(int limit) {
-        QueryWrapper<TopMoviesViewGood> queryWrapper = new QueryWrapper<>();
-        List<TopMoviesViewGood> list =topMoviesViewGoodMapper.selectList(queryWrapper);
+    public List<Top10MoviesTb> getTopMovies(int limit) {
+        QueryWrapper<Top10MoviesTb> queryWrapper = new QueryWrapper<>();
+        List<Top10MoviesTb> list =top10MoviesTbMapper.selectList(queryWrapper);
           return list;
     }
 
 
-    public List<TopMoviesView5> getTopMoviesLast5Years(int limit) {
-        QueryWrapper<TopMoviesView5> queryWrapper = new QueryWrapper<>();
+    public List<Top5yearMoviesTb> getTopMoviesLast5Years(int limit) {
+        QueryWrapper<Top5yearMoviesTb> queryWrapper = new QueryWrapper<>();
         queryWrapper.isNotNull("goodCount").gt("goodCount", 0);
-        List<TopMoviesView5> resultList = topMoviesView5Mapper.selectList(queryWrapper);
+        List<Top5yearMoviesTb> resultList = top5yearMoviesTbMapper.selectList(queryWrapper);
          return resultList;
     }
 
@@ -145,29 +146,29 @@ public class MoviesServiceImpl extends ServiceImpl<MoviesMapper, Movies>
      * @param moviesList
      * @return
      */
-    public List<MovieItem> convertToMovieItem(List<TopMoviesView5> moviesList) {
+    public List<MovieItem> convertToMovieItem(List<Top5yearMoviesTb> moviesList) {
         List<MovieItem> topMovies = new ArrayList<>();
 
-        for (TopMoviesView5 movies : moviesList) {
+        for (Top5yearMoviesTb movies : moviesList) {
             MovieItem movieItem = new MovieItem();
             movieItem.setId(movies.getId());
             movieItem.setTitle(movies.getName());
             movieItem.setCoverUrl(movies.getImg());
             movieItem.setRating(movies.getRating());
-            Double goodRate = movies.getGoodrate(); // Assuming goodRate is of type Double
-            String goodRatingStr = (goodRate != null) ? formatGoodRate(goodRate, 2) : "";
+            BigDecimal goodRate2 = movies.getGoodrate2(); // Assuming goodRate is of type Double
+            String goodRatingStr = (goodRate2 != null) ? formatGoodRate(goodRate2, 2) : "";
             movieItem.setGoodRateStr(goodRatingStr);
-            movieItem.setGoodCount(movies.getGoodcount());
+            movieItem.setGoodCount(movies.getLikecount2());
             movieItem.setYear(movies.getYear());
             topMovies.add(movieItem);
         }
         return topMovies;
     }
 
-    public List<MovieItem> convertToMovieItem2(List<TopMoviesViewGood> moviesList) {
+    public List<MovieItem> convertToMovieItem2(List<Top10MoviesTb> moviesList) {
         List<MovieItem> topMovies = new ArrayList<>();
 
-        for (TopMoviesViewGood movies : moviesList) {
+        for (Top10MoviesTb movies : moviesList) {
             MovieItem movieItem = new MovieItem();
             movieItem.setId(movies.getId());
             movieItem.setTitle(movies.getName());
@@ -176,7 +177,7 @@ public class MoviesServiceImpl extends ServiceImpl<MoviesMapper, Movies>
             Double goodRate = movies.getGoodrate(); // Assuming goodRate is of type Double
             String goodRatingStr = (goodRate != null) ? formatGoodRate(goodRate, 2) : "";
             movieItem.setGoodRateStr(goodRatingStr);
-            movieItem.setGoodCount(movies.getGoodcount());
+            movieItem.setGoodCount(movies.getLikecount2());
             movieItem.setYear(movies.getYear());
             topMovies.add(movieItem);
         }
@@ -187,6 +188,14 @@ public class MoviesServiceImpl extends ServiceImpl<MoviesMapper, Movies>
         if (goodRate == 0.0) return "";
         // Use String.format to format the double value with the specified number of decimal places
         return String.format("%." + decimalPlaces + "f%%", goodRate * 100);
+    }
+
+     private static String formatGoodRate(BigDecimal goodRate, int decimalPlaces) {
+         if (goodRate.compareTo(BigDecimal.ZERO) == 0) {
+             return "";
+         }         // Use String.format to format the double value with the specified number of decimal places
+         double goodRateDouble = goodRate.setScale(decimalPlaces, BigDecimal.ROUND_HALF_UP).doubleValue();
+         return String.format("%." + decimalPlaces + "f%%", goodRateDouble * 100);
     }
 
      private static String formatTags(String tagsJson) {
