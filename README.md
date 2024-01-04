@@ -28,6 +28,14 @@ npm run serve
 
 
 
+后端启动脚本
+
+```
+java -jar template-main.jar
+```
+
+
+
 ```
 
 #### 后台接口文档地址
